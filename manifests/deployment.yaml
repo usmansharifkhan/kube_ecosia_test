@@ -26,8 +26,8 @@ spec:
             port: 1234
             scheme: HTTP
           initialDelaySeconds: 5
-          periodSeconds: 60
-          timeoutSeconds: 30
+          periodSeconds: 5
+          timeoutSeconds: 10
           failureThreshold: 3
         readinessProbe:
           httpGet:
@@ -35,17 +35,15 @@ spec:
             port: 1234
             scheme: HTTP
           initialDelaySeconds: 5
-          periodSeconds: 60
-          timeoutSeconds: 30
+          periodSeconds: 5
+          timeoutSeconds: 10
           failureThreshold: 3
         resources:
           limits:
             cpu: "0.5"
             memory: "128Mi"
         env:
-          - name: POD_IP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.podIP
+          - name: GUNICORN_WORKERS
+            value: "2"
         ports:
           - containerPort: 1234
