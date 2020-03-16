@@ -20,6 +20,8 @@ spec:
       - name: rest-server
         image: "rest_server:0.1"
         imagePullPolicy: IfNotPresent
+# Liveness and Readiness probes checks should be different as they serve a different purpose but in this case there is only one rest api call available
+# Liveness probe helps in triggering kubelet to restart the container
         livenessProbe:
           httpGet:
             path: /tree
@@ -29,6 +31,7 @@ spec:
           periodSeconds: 5
           timeoutSeconds: 10
           failureThreshold: 3
+# Readiness probe helps kube-proxy in deciding if the container is ready to accept traffic
         readinessProbe:
           httpGet:
             path: /tree
