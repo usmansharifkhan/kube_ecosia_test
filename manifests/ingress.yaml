@@ -1,0 +1,15 @@
+---
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-rest-server
+spec:
+  rules:
+  - host: local.ecosia.org
+    http:
+      paths:
+      - path: /tree
+        backend:
+          serviceName: rest-server
+          servicePort: 1234

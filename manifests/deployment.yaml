@@ -1,0 +1,51 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-server
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest-server
+  template:
+    metadata:
+      labels:
+        app: rest-server
+    spec:
+      enableServiceLinks: false
+      containers:
+      - name: rest-server
+        image: "rest_server:0.1"
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /tree
+            port: 1234
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /tree
+            port: 1234
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 60
+          timeoutSeconds: 30
+          failureThreshold: 3
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "128Mi"
+        env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+        ports:
+          - containerPort: 1234
