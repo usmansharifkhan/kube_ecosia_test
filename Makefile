@@ -26,6 +26,6 @@ test:
 stop: prereq
 
 mac_setup:
-	brew install minikube
+	brew install make minikube
 
 
